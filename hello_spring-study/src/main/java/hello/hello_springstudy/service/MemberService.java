@@ -1,0 +1,42 @@
+package hello.hello_springstudy.service;
+
+import hello.hello_springstudy.domain.Member;
+import hello.hello_springstudy.repository.MemberRepository;
+import hello.hello_springstudy.repository.MemoryMemberRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+public class MemberService {
+
+    private final MemberRepository memberRepository = new MemoryMemberRepository();
+
+    /**
+    * 회원 가입
+    */
+    public Long join(Member member) {
+        validateDuplicateMember(member);    // 중복 회원 검증
+        memberRepository.save(member);
+        return member.getId();
+    }
+
+    private void validateDuplicateMember(Member member){
+        //Optional<Member> result = memberRepository.findByName(member.getName());
+        memberRepository.findByName(member.getName())
+            .ifPresent(m -> {  // 메모리 리포지토리에서 멤버의 이름을 찾아와 같은지 비교 후 null 이 아니면
+                throw new IllegalStateException("이미 존재하는 회원입니다.");
+                        // 람다식을 이용홰 Optional을 숨기고 바로 적용
+                });
+    }
+
+    /**
+    *  전체 회원 조회
+    */
+    public List<Member> findMembers(){
+       return memberRepository.findAll();
+    }
+
+    public Optional<Member> findOne(Long memberId) {
+        return memberRepository.findById(memberId);
+    }
+}
