@@ -12,7 +12,7 @@ public class MeoryMemeberRepositoryTest {
 
     MemoryMemberRepository repository = new MemoryMemberRepository();
 
-    @AfterEach
+    @AfterEach // 아래 모든 테스트는 순차적으로 작동X 데이터가 섞여 오류 발생대비 각 테스트 끝남과 동시에 메모리 초기화
     public void afterEach() {
         repository.clearStore();
     }
