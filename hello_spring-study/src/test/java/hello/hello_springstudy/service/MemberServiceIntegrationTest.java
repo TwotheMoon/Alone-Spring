@@ -1,12 +1,14 @@
 package hello.hello_springstudy.service;
 
 import hello.hello_springstudy.domain.Member;
+import hello.hello_springstudy.repository.MemberRepository;
 import hello.hello_springstudy.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,24 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
-@Transactional
+@Transactional // AfterEach 와 비슷한 기능 트랜잭션 롤백해서 테스트 마침
 class MemberServiceIntegrationTest {
 
     @Autowired MemberService memberService;
-    @Autowired MemoryMemberRepository memberRepository;
+    @Autowired MemberRepository memberRepository;
 
-    @AfterEach // 아래 모든 테스트는 순차적으로 작동X 데이터가 섞여 오류 발생대비 각 테스트 끝남과 동시에 메모리 초기화
-    public void afterEach() {
-        memberRepository.clearStore();
-    }
-
+//    @AfterEach // 아래 모든 테스트는 순차적으로 작동X 데이터가 섞여 오류 발생대비 각 테스트 끝남과 동시에 메모리 초기화
+//    public void afterEach() {
+//        memberRepository.clearStore();
+//    }
 
     @Test
-
     void 회원가입() {
         //given 실무자 패턴
         Member member = new Member();
-        member.setName("hello");
+        member.setName("spring");
 
         //when
         Long saveId = memberService.join(member);
@@ -68,11 +68,4 @@ class MemberServiceIntegrationTest {
         //then
     }
 
-    @Test
-    void findMembers() {
-    }
-
-    @Test
-    void findOne() {
-    }
 }

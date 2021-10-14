@@ -26,7 +26,6 @@ class MemberServiceTest {
         memberRepository.clearStore();
     }
 
-
     @Test
 
     void 회원가입() {
